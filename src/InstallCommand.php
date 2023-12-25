@@ -40,10 +40,17 @@ class InstallCommand extends Command
      */
     public function handle()
     {        
+        $this->installNodePackage();
+        $this->installComposerPackages();
+        $this->installConfig();
+        $this->installFrontend();
+        $this->installBackend();
+        $this->installTests();
+
         return 1;
     }
 
-    protected function installFrontend()
+    protected function installNodePackages()
     {
         // Dev dependencies
         $this->updateNodePackages(function ($packages) {
@@ -91,9 +98,6 @@ class InstallCommand extends Command
             ] + $packages;
         }, false);
 
-        
-
-        // AAdd the following to the scripts section of your package.json file:
         $this->replaceInFile(
             search: '"scripts": {', 
             replace: '
@@ -112,31 +116,60 @@ class InstallCommand extends Command
             ', 
             path: base_path('package.json')
         );
-        
-        $this->replaceInFile(
-            search: "'root' => storage_path('app/public'),",
-            replace: "'root' => public_path('storage'),",
-            path: config_path('filesystems.php'),
-        );
 
-        $this->replaceInFile(
-            search: "'url' => env('APP_URL').'/storage',",
-            replace: "'url' => env('APP_URL'),",
-            path: config_path('filesystems.php'),
-        );
+        return 1;
 
-        copy(__DIR__.'/../../stubs/webpack.mix.js', base_path('webpack.mix.js'));
-        copy(__DIR__.'/../../stubs/tailwind.config.js', base_path('tailwind.config.js'));
-        copy(__DIR__.'/../../stubs/resources/js/app.js', resource_path('js/app.js'));
-        copy(__DIR__.'/../../stubs/resources/js/Pages/Welcome.vue', resource_path('js/Pages/Welcome.vue'));
-        copy(__DIR__.'/../../stubs/resources/js/Layouts/AppLayout.vue', resource_path('js/Layouts/AppLayout.vue'));
-        copy(__DIR__.'/../../stubs/resources/js/Shared', resource_path('js/Shared'));
-        copy(__DIR__.'/../../stubs/resources/css/app.css', resource_path('css/app.css'));
-        copy(__DIR__.'/../../stubs/resources/css/tailwind.css', resource_path('css/tailwind.css'));
+        // copy(__DIR__.'/../../stubs/webpack.mix.js', base_path('webpack.mix.js'));
+        // copy(__DIR__.'/../../stubs/tailwind.config.js', base_path('tailwind.config.js'));
+        // copy(__DIR__.'/../../stubs/resources/js/app.js', resource_path('js/app.js'));
+        // copy(__DIR__.'/../../stubs/resources/js/Pages/Welcome.vue', resource_path('js/Pages/Welcome.vue'));
+        // copy(__DIR__.'/../../stubs/resources/js/Layouts/AppLayout.vue', resource_path('js/Layouts/AppLayout.vue'));
+        // copy(__DIR__.'/../../stubs/resources/js/Shared', resource_path('js/Shared'));
+        // copy(__DIR__.'/../../stubs/resources/css/app.css', resource_path('css/app.css'));
+        // copy(__DIR__.'/../../stubs/resources/css/tailwind.css', resource_path('css/tailwind.css'));
     }
 
+    protected function installComposerPackages()
+    {
+        if (!$this->requireComposerPackages([
+            'inertiajs/inertia-laravel:^0.6.11', 
+            'laravel/sanctum:^3.2', 
+            'tightenco/ziggy:^1.0',
+            'spatie/laravel-data:^2.2.3',
+            'spatie/laravel-typescript-transformer:^2.1.7',
+            'league/flysystem-aws-s3-v3:^3.0',
+            'hashids/hashids:^5.0',
+            'laravel/socialite:^5.10',
+            'based/momentum-modal:^0.2.0',
+            'laravel/cashier:^13.17',
+            'laravel/fortify:^1.19',
+        ])) {
+            return 1;
+        }
+
+        if (!$this->requireComposerPackages([
+            'barryvdh/laravel-debugbar:^3.9',
+        ], true)) {
+            return 1;
+        }
+
+
+    }    
+
+    protected function installFrontend()
+    {
+
+
+    }
+
+    protected function installBackend()
+    {
+
+    }
+
+
     /**
-     * Install Breeze's tests.
+     * Install Surge's tests.
      *
      * @return bool
      */
@@ -144,28 +177,16 @@ class InstallCommand extends Command
     {
         (new Filesystem)->ensureDirectoryExists(base_path('tests/Feature'));
 
-        $stubStack = match ($this->argument('stack')) {
-            'api' => 'api',
-            'livewire' => 'livewire-common',
-            'livewire-functional' => 'livewire-common',
-            default => 'default',
-        };
+        $stubStack = 'default';
 
-        if ($this->option('pest') || $this->isUsingPest()) {
-            if ($this->hasComposerPackage('phpunit/phpunit')) {
-                $this->removeComposerPackages(['phpunit/phpunit'], true);
-            }
-
-            if (!$this->requireComposerPackages(['pestphp/pest:^2.0', 'pestphp/pest-plugin-laravel:^2.0'], true)) {
-                return false;
-            }
-
-            (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/'.$stubStack.'/pest-tests/Feature', base_path('tests/Feature'));
-            (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/'.$stubStack.'/pest-tests/Unit', base_path('tests/Unit'));
-            (new Filesystem)->copy(__DIR__.'/../../stubs/'.$stubStack.'/pest-tests/Pest.php', base_path('tests/Pest.php'));
-        } else {
-            (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/'.$stubStack.'/tests/Feature', base_path('tests/Feature'));
+        if (!$this->requireComposerPackages(['pestphp/pest:^2.0', 'pestphp/pest-plugin-laravel:^2.0'], true)) {
+            return false;
         }
+
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/'.$stubStack.'/pest-tests/Feature', base_path('tests/Feature'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/'.$stubStack.'/pest-tests/Unit', base_path('tests/Unit'));
+        (new Filesystem)->copy(__DIR__.'/../../stubs/'.$stubStack.'/pest-tests/Pest.php', base_path('tests/Pest.php'));
+        
 
         return true;
     }
