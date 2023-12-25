@@ -1,0 +1,26 @@
+<template>
+    <Modal>
+        <ModalBody>
+            <ModalHeader>
+                <!-- Title -->
+            </ModalHeader>
+
+            <!-- ... -->
+                
+        </ModalBody>
+    </Modal>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { useModal } from 'momentum-modal'
+import Modal from '@/Components/Modal/Modal.vue';
+import ModalHeader from '@/Components/Modal/ModalHeader.vue';
+import ModalBody from '@/Components/Modal/ModalBody.vue';
+
+const { close } = useModal()
+
+const props = defineProps({
+    
+})
+</script>

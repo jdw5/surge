@@ -1,0 +1,54 @@
+<template>
+    <Modal>
+        <ModalBody>
+            <ModalHeader>
+                <!-- Title -->
+            </ModalHeader>
+            <form @submit.prevent="submit" class="p-4 space-y-4">
+
+                <!-- ... -->
+
+                <div class="flex gap-x-4 justify-end items-center">
+                    <SecondaryButton type="button" @click="close">
+                        Cancel
+                    </SecondaryButton>
+                    <PrimaryButton type="submit">
+                        Create
+                    </PrimaryButton>
+                </div>
+            </form>
+        </ModalBody>
+    </Modal>
+</template>
+
+<script setup>
+import { useForm } from '@inertiajs/vue3'
+import { ref } from 'vue'
+import { useModal } from 'momentum-modal'
+import Modal from '@/Components/Modal/Modal.vue';
+import ModalHeader from '@/Components/Modal/ModalHeader.vue';
+import ModalBody from '@/Components/Modal/ModalBody.vue';
+import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue';
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
+
+const { close } = useModal()
+
+const props = defineProps({
+    
+})
+
+const form = useForm({
+    // ...
+})
+
+const submit = () => {
+    form.submit(route(''), {
+        onSuccess: () => {
+            close()
+        },
+        onError: () => {
+            // ...
+        }
+    })
+}
+</script>

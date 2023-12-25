@@ -1,0 +1,36 @@
+<template>
+    <Head title="New Page"></Head>
+
+    <!-- ... -->
+
+</template>
+
+<script setup>
+import { Head, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import MainLayout from '@/Layouts/MainLayout.vue';
+import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue';
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
+
+defineOptions({ layout: MainLayout })
+
+const props = defineProps({
+    // ...
+})
+
+const form = useForm({
+    // ...
+})
+
+const submit = () => {
+    form.submit(route(''), {
+        onSuccess: () => {
+            close()
+        },
+        onError: () => {
+            // ...
+        }
+    })
+}
+
+</script>

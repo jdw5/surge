@@ -3,13 +3,11 @@
 namespace Laravel\Breeze\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -158,18 +156,96 @@ class InstallCommand extends Command
 
     protected function installFrontend()
     {
+        // Copy over the package.json files
 
+        // Copy over typescript
+        copy(__DIR__.'/../../stubs/resources/css/app.css', resource_path('css/app.css'));
+        copy(__DIR__.'/../../stubs/postcss.config.js', base_path('postcss.config.js'));
+        copy(__DIR__.'/../../stubs/tailwind.config.js', base_path('tailwind.config.js'));
+        copy(__DIR__.'/../../stubs/vite.config.js', base_path('vite.config.js'));
+        // copy(__DIR__.'/../../stubs/tsconfig.json', base_path('tsconfig.json'));
+        copy(__DIR__.'/../../stubs/resources/js/app.ts', resource_path('js/app.ts'));
+
+        if (file_exists(resource_path('js/app.js'))) {
+            unlink(resource_path('js/app.js'));
+        }
+
+        if (file_exists(resource_path('js/bootstrap.js'))) {
+            rename(resource_path('js/bootstrap.js'), resource_path('js/bootstrap.ts'));
+        }
+
+        $this->replaceInFile('.js', '.ts', base_path('vite.config.js'));
+        $this->replaceInFile('.js', '.ts', resource_path('views/app.blade.php'));
+        
+        // Create directories
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Components'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Layouts'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Pages'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Lib'));
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/Modals'));
+
+        // Copy over
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/resources/js/Components', resource_path('js/Components'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/resources/js/Layouts', resource_path('js/Layouts'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/resources/js/Pages', resource_path('js/Pages'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/resources/js/Lib', resource_path('js/Lib'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/resources/js/Modals', resource_path('js/Modals'));
 
     }
 
     protected function installBackend()
     {
+        // Run the Cashier migrations
+        $this->call(
+            'vendor:publish', 
+            [
+                '--tag' => 'cashier-migrations',
+            ]
+        );
 
+        // Run fortify
+        $this->call(
+            'vendor:publish', 
+            [
+                '--provider' => 'Laravel\Fortify\FortifyServiceProvider',
+            ]
+        );
+
+        $this->call(
+            'migrate'
+        );
+
+        // Add billable trait to user model
+
+        // Actions...
+        (new Filesystem)->ensureDirectoryExists(app_path('Actions'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Actions', app_path('Actions'));
+
+        // Casts...
+        (new Filesystem)->ensureDirectoryExists(app_path('Casts'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Casts', app_path('Casts'));
+
+        // Controllers...
+        (new Filesystem)->ensureDirectoryExists(app_path('Http/Controllers'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Http/Controllers', app_path('Http/Controllers'));
+
+        // Middleware
+
+        // Requests...
+        (new Filesystem)->ensureDirectoryExists(app_path('Http/Requests'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Http/Requests', app_path('Http/Requests'));
+
+        // Services...
+        (new Filesystem)->ensureDirectoryExists(app_path('Services'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Services', app_path('Services'));
+
+        // Stubs
+        (new Filesystem)->ensureDirectoryExists(base_path('Stubs'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/Stubs', base_path('Stubs'));
     }
 
-
     /**
-     * Install Surge's tests.
+     * Install the test suite.
      *
      * @return bool
      */
@@ -179,13 +255,16 @@ class InstallCommand extends Command
 
         $stubStack = 'default';
 
-        if (!$this->requireComposerPackages(['pestphp/pest:^2.0', 'pestphp/pest-plugin-laravel:^2.0'], true)) {
+        if (!$this->requireComposerPackages([
+            'pestphp/pest:^2.0', 
+            'pestphp/pest-plugin-laravel:^2.0'
+        ], true)) {
             return false;
         }
 
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/'.$stubStack.'/pest-tests/Feature', base_path('tests/Feature'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/'.$stubStack.'/pest-tests/Unit', base_path('tests/Unit'));
-        (new Filesystem)->copy(__DIR__.'/../../stubs/'.$stubStack.'/pest-tests/Pest.php', base_path('tests/Pest.php'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/pest-tests/Feature', base_path('tests/Feature'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/pest-tests/Unit', base_path('tests/Unit'));
+        (new Filesystem)->copy(__DIR__.'/../../stubs/default/pest-tests/Pest.php', base_path('tests/Pest.php'));
         
 
         return true;
@@ -357,72 +436,5 @@ class InstallCommand extends Command
     protected function phpBinary()
     {
         return (new PhpExecutableFinder())->find(false) ?: 'php';
-    }
-
-    /**
-     * Run the given commands.
-     *
-     * @param  array  $commands
-     * @return void
-     */
-    protected function runCommands($commands)
-    {
-        $process = Process::fromShellCommandline(implode(' && ', $commands), null, null, null, null);
-
-        if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
-            try {
-                $process->setTty(true);
-            } catch (RuntimeException $e) {
-                $this->output->writeln('  <bg=yellow;fg=black> WARN </> '.$e->getMessage().PHP_EOL);
-            }
-        }
-
-        $process->run(function ($type, $line) {
-            $this->output->write('    '.$line);
-        });
-    }
-
-    /**
-     * Interact further with the user if they were prompted for missing arguments.
-     *
-     * @param  \Symfony\Component\Console\Input\InputInterface  $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
-     * @return void
-     */
-    protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output)
-    {
-        $stack = $input->getArgument('stack');
-
-        if (in_array($stack, ['react', 'vue'])) {
-            collect(multiselect(
-                label: 'Would you like any optional features?',
-                options: [
-                    'dark' => 'Dark mode',
-                    'ssr' => 'Inertia SSR',
-                    'typescript' => 'TypeScript (experimental)',
-                ]
-            ))->each(fn ($option) => $input->setOption($option, true));
-        } elseif (in_array($stack, ['blade', 'livewire', 'livewire-functional'])) {
-            $input->setOption('dark', confirm(
-                label: 'Would you like dark mode support?',
-                default: false
-            ));
-        }
-
-        $input->setOption('pest', select(
-            label: 'Which testing framework do you prefer?',
-            options: ['PHPUnit', 'Pest'],
-            default: $this->isUsingPest() ? 'Pest' : 'PHPUnit',
-        ) === 'Pest');
-    }
-
-    /**
-     * Determine whether the project is already using Pest.
-     *
-     * @return bool
-     */
-    protected function isUsingPest()
-    {
-        return class_exists(\Pest\TestSuite::class);
     }
 }
