@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Breeze\Console;
+namespace Jdw5\Surge\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -10,10 +10,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
-
-use function Laravel\Prompts\confirm;
-use function Laravel\Prompts\multiselect;
-use function Laravel\Prompts\select;
 
 class InstallCommand extends Command
 {
@@ -105,8 +101,8 @@ class InstallCommand extends Command
                     "build": "run-p format lint type-check && npm run build-only",
                     "build-all": "composer helpers && ./vendor/bin/pint && ./vendor/bin/phpstan analyse --memory-limit=512M && ./vendor/bin/pest && npm run build",
                     "type-check": "vue-tsc --noEmit",
-                    "lint": "eslint \"resources/{scripts,views}/**/*.{js,ts,vue}\" --fix",
-                    "format": "prettier \"resources/{scripts,views,css}/**/*.{js,ts,vue,css}\" --write",
+                    "lint": "eslint \"resources/**/*.{js,ts,vue}\" --fix",
+                    "format": "prettier \"resources/**/*.{js,ts,vue,css}\" --write",
                     "release": "npm run build-all && node ./release.js",
                     "patch": "npm version patch --no-git-tag-version && npm run release",
                     "minor": "npm version minor --no-git-tag-version && npm run release"
@@ -114,17 +110,6 @@ class InstallCommand extends Command
             ', 
             path: base_path('package.json')
         );
-
-        return 1;
-
-        // copy(__DIR__.'/../../stubs/webpack.mix.js', base_path('webpack.mix.js'));
-        // copy(__DIR__.'/../../stubs/tailwind.config.js', base_path('tailwind.config.js'));
-        // copy(__DIR__.'/../../stubs/resources/js/app.js', resource_path('js/app.js'));
-        // copy(__DIR__.'/../../stubs/resources/js/Pages/Welcome.vue', resource_path('js/Pages/Welcome.vue'));
-        // copy(__DIR__.'/../../stubs/resources/js/Layouts/AppLayout.vue', resource_path('js/Layouts/AppLayout.vue'));
-        // copy(__DIR__.'/../../stubs/resources/js/Shared', resource_path('js/Shared'));
-        // copy(__DIR__.'/../../stubs/resources/css/app.css', resource_path('css/app.css'));
-        // copy(__DIR__.'/../../stubs/resources/css/tailwind.css', resource_path('css/tailwind.css'));
     }
 
     protected function installComposerPackages()
@@ -225,6 +210,10 @@ class InstallCommand extends Command
         (new Filesystem)->ensureDirectoryExists(app_path('Casts'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Casts', app_path('Casts'));
 
+        // Config...
+        copy(__DIR__.'/../../stubs/config/hashids.php', config_path('hashids.php'));
+        copy(__DIR__.'/../../stubs/config/socialite.php', config_path('socialite.php'));
+
         // Controllers...
         (new Filesystem)->ensureDirectoryExists(app_path('Http/Controllers'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Http/Controllers', app_path('Http/Controllers'));
@@ -238,9 +227,16 @@ class InstallCommand extends Command
         $this->installMiddlewareAfter('\App\Http\Middleware\HandleInertiaRequests::class', '\Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class');
         copy(__DIR__.'/../../stubs/app/Http/Middleware/HandleInertiaRequests.php', app_path('Http/Middleware/HandleInertiaRequests.php'));
 
+        // Copy across the Fortify provider
+        copy(__DIR__.'/../../stubs/app/Providers/FortifyServiceProvider.php', app_path('Providers/FortifyServiceProvider.php'));
+
         // Requests...
         (new Filesystem)->ensureDirectoryExists(app_path('Http/Requests'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Http/Requests', app_path('Http/Requests'));
+
+        // Responses...
+        (new Filesystem)->ensureDirectoryExists(app_path('Http/Responses'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Http/Responses', app_path('Http/Responses'));
 
         // Routes...
         copy(__DIR__.'/../../stubs/routes/web.php', base_path('routes/web.php'));
@@ -263,8 +259,6 @@ class InstallCommand extends Command
     protected function installTests()
     {
         (new Filesystem)->ensureDirectoryExists(base_path('tests/Feature'));
-
-        $stubStack = 'default';
 
         if (!$this->requireComposerPackages([
             'pestphp/pest:^2.0', 
