@@ -229,11 +229,22 @@ class InstallCommand extends Command
         (new Filesystem)->ensureDirectoryExists(app_path('Http/Controllers'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Http/Controllers', app_path('Http/Controllers'));
 
-        // Middleware
+        // Data...
+        (new Filesystem)->ensureDirectoryExists(app_path('Data'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Data', app_path('Data'));
+
+        // Middleware...
+        $this->installMiddlewareAfter('SubstituteBindings::class', '\App\Http\Middleware\HandleInertiaRequests::class');
+        $this->installMiddlewareAfter('\App\Http\Middleware\HandleInertiaRequests::class', '\Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class');
+        copy(__DIR__.'/../../stubs/app/Http/Middleware/HandleInertiaRequests.php', app_path('Http/Middleware/HandleInertiaRequests.php'));
 
         // Requests...
         (new Filesystem)->ensureDirectoryExists(app_path('Http/Requests'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Http/Requests', app_path('Http/Requests'));
+
+        // Routes...
+        copy(__DIR__.'/../../stubs/routes/web.php', base_path('routes/web.php'));
+        copy(__DIR__.'/../../stubs/routes/auth.php', base_path('routes/auth.php'));
 
         // Services...
         (new Filesystem)->ensureDirectoryExists(app_path('Services'));
@@ -241,7 +252,7 @@ class InstallCommand extends Command
 
         // Stubs
         (new Filesystem)->ensureDirectoryExists(base_path('Stubs'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/Stubs', base_path('Stubs'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/stubs', base_path('stubs'));
     }
 
     /**
@@ -262,9 +273,9 @@ class InstallCommand extends Command
             return false;
         }
 
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/pest-tests/Feature', base_path('tests/Feature'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/pest-tests/Unit', base_path('tests/Unit'));
-        (new Filesystem)->copy(__DIR__.'/../../stubs/default/pest-tests/Pest.php', base_path('tests/Pest.php'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/tests/Feature', base_path('tests/Feature'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/tests/Unit', base_path('tests/Unit'));
+        (new Filesystem)->copy(__DIR__.'/../../stubs/default/tests/Pest.php', base_path('tests/Pest.php'));
         
 
         return true;
