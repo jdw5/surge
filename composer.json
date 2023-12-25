@@ -1,0 +1,37 @@
+{
+    "name": "jdw5/surge",
+    "description": "Laravel + Vue + Inertia complete starter kit",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Jdw5\\Surge\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "jdw5\\Surge\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+
+            "name": "Joshua Wallace",
+            "email": "joshuadwallace1@gmail.com",
+            "homepage": "https://joshua-wallace.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^10.38"
+    },
+    "minimum-stability": "dev",
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+
+}
