@@ -7,24 +7,36 @@
             "Jdw5\\Surge\\": "src/"
         }
     },
+    
     "autoload-dev": {
         "psr-4": {
             "jdw5\\Surge\\Tests\\": "tests/"
         }
     },
+
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Jdw5\\Surge\\SurgeServiceProvider"
+            ]
+        }
+    },
+
     "authors": [
         {
-
+            
             "name": "Joshua Wallace",
             "email": "joshuadwallace1@gmail.com",
             "homepage": "https://joshua-wallace.com"
         }
     ],
-    "require": {
-        "php": "^8.1",
-        "illuminate/support": "^10.38"
-    },
+
     "minimum-stability": "dev",
+    "prefer-stable": true,
+
     "config": {
         "sort-packages": true,
         "preferred-install": "dist",
@@ -32,6 +44,20 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
-    }
+    },
 
+    "require": {
+        "php": "^8.1.0",
+        "illuminate/console": "^10.17",
+        "illuminate/filesystem": "^10.17",
+        "illuminate/support": "^10.17",
+        "illuminate/validation": "^10.17"
+    },
+
+    "require-dev": {
+        "laravel/pint": "dev-main",
+        "orchestra/testbench": "^8.0",
+        "pestphp/pest": "^2.28",
+        "phpstan/phpstan": "^1.10"
+    }
 }
