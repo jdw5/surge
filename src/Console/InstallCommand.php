@@ -196,10 +196,17 @@ class InstallCommand extends Command
         );
 
         $this->call(
+            'vendor:publish', 
+            [
+                '--tag' => 'typescript-transformer-config'
+            ]
+        );
+
+        $this->call(
             'migrate'
         );
 
-        // Add billable trait to user model
+        // Add billable trait to user model and hash the ID
 
         // Actions...
         (new Filesystem)->ensureDirectoryExists(app_path('Actions'));
@@ -221,12 +228,15 @@ class InstallCommand extends Command
         (new Filesystem)->ensureDirectoryExists(app_path('Data'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Data', app_path('Data'));
 
+        // Models
+        copy(__DIR__.'/../../stubs/app/Models/User.php', app_path('Models/User.php'));
+
         // Middleware...
         $this->installMiddlewareAfter('SubstituteBindings::class', '\App\Http\Middleware\HandleInertiaRequests::class');
         $this->installMiddlewareAfter('\App\Http\Middleware\HandleInertiaRequests::class', '\Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class');
         copy(__DIR__.'/../../stubs/app/Http/Middleware/HandleInertiaRequests.php', app_path('Http/Middleware/HandleInertiaRequests.php'));
 
-        // Copy across the Fortify provider
+        // Fortify provider
         copy(__DIR__.'/../../stubs/app/Providers/FortifyServiceProvider.php', app_path('Providers/FortifyServiceProvider.php'));
 
         // Requests...

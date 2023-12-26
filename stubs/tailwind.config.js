@@ -53,12 +53,20 @@ export default {
                         hover: '#4b5563'
                     }
                 },
+
                 on: {
                     primary: {
                         DEFAULT:'#f3f4f6',
                         hover: '#000000',
                         active: '#000000',
                     },
+                    
+                    secondary: {
+                        DEFAULT:'#f3f4f6',
+                        hover: '#000000',
+                        active: '#000000',
+                    },
+
                     surface: {
                         DEFAULT:'#374151',
                         hover: '#1f2937',
