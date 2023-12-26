@@ -44,70 +44,7 @@ class InstallCommand extends Command
 
     protected function installNodePackages()
     {
-        // Dev dependencies
-        $this->updateNodePackages(function ($packages) {
-            return [
-                '@inertiajs/vue3' => '^1.0.0',
-                "@tailwindcss/forms" => "^0.5.3",
-                '@tailwindcss/typography' => '^0.4.0',
-                "@types/node" => "^18.11.18",
-                "@vue/server-renderer" => "^3.2.45",
-                "axios" => "^1.2.0",
-                "npm-run-all" => "^4.1.5",
-                "laravel-vite-plugin" => "^0.8.0",
-                "@typescript-eslint/eslint-plugin" => "^5.48.1",
-                "@typescript-eslint/parser" => "^5.40.0",
-                "@vitejs/plugin-vue" => "^4.2.3",
-                "autoprefixer" => "^10.4.13",
-                "eslint" => "^8.25.0",
-                "eslint-config-prettier" => "^8.5.0",
-                "eslint-plugin-tailwindcss" => "^3.8.0",
-                "eslint-plugin-unused-imports" => "^2.0.0",
-                "eslint-plugin-vue" => "^9.9.0",
-                "npm-run-all" => "^4.1.5",
-                "postcss" => "^8.4.20",
-                "prettier" => "^2.8.1",
-                "prettier-plugin-tailwindcss" => "^0.2.1",
-                "tailwindcss" => "^3.2.4",
-                "typescript" => "^4.9.4",
-                "unplugin-auto-import" => "^0.13.0",
-                "unplugin-vue-components" => "^0.23.0",
-                "vite" => "^4.3.9",
-                "vite-plugin-eslint" => "^1.8.1",
-                "vite-plugin-watch" => "^0.1.1",
-                "vue" => "^3.3.4",
-                "vue-tsc" => "^1.6.5"
-            ] + $packages;
-        }, true);
-
-        // Other dependencies
-        $this->updateNodePackages(function ($packages) {
-            return [
-                "@headlessui/vue" => "^1.7.16",
-                "@heroicons/vue" => "^2.0.18",
-                "@vueuse/core" => "^10.7.0",
-                "momentum-modal" => "^0.2.1",
-            ] + $packages;
-        }, false);
-
-        $this->replaceInFile(
-            search: '"scripts": {', 
-            replace: '
-                "scripts": {
-                    "dev": "vite",
-                    "build-only": "vite build && vite build --ssr",
-                    "build": "run-p format lint type-check && npm run build-only",
-                    "build-all": "composer helpers && ./vendor/bin/pint && ./vendor/bin/phpstan analyse --memory-limit=512M && ./vendor/bin/pest && npm run build",
-                    "type-check": "vue-tsc --noEmit",
-                    "lint": "eslint \"resources/**/*.{js,ts,vue}\" --fix",
-                    "format": "prettier \"resources/**/*.{js,ts,vue,css}\" --write",
-                    "release": "npm run build-all && node ./release.js",
-                    "patch": "npm version patch --no-git-tag-version && npm run release",
-                    "minor": "npm version minor --no-git-tag-version && npm run release"
-                },
-            ', 
-            path: base_path('package.json')
-        );
+        copy(__DIR__.'/../../stubs/package.json', base_path('package.json'));
     }
 
     protected function installComposerPackages()
@@ -133,8 +70,6 @@ class InstallCommand extends Command
         ], true)) {
             return 1;
         }
-
-
     }    
 
     protected function installFrontend()
