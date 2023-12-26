@@ -86,6 +86,7 @@ class InstallCommand extends Command
         copy(__DIR__.'/../../stubs/vite.config.ts', base_path('vite.config.ts'));
         copy(__DIR__.'/../../stubs/tsconfig.json', base_path('tsconfig.json'));
         copy(__DIR__.'/../../stubs/resources/js/app.ts', resource_path('js/app.ts'));
+        copy(__DIR__.'/../../stubs/resources/js/ssr.ts', resource_path('js/ssr.ts'));
         copy(__DIR__.'/../../stubs/resources/views/app.blade.php', resource_path('views/app.blade.php'));
 
         if (file_exists(base_path('vite.config.js'))) {
@@ -214,7 +215,7 @@ class InstallCommand extends Command
 
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/tests/Feature', base_path('tests/Feature'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/tests/Unit', base_path('tests/Unit'));
-        copy(__DIR__.'/../../stubs/default/tests/Pest.php', base_path('tests/Pest.php'));
+        copy(__DIR__.'/../../stubs/tests/Pest.php', base_path('tests/Pest.php'));
 
         return true;
     }
