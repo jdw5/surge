@@ -100,7 +100,6 @@ class InstallCommand extends Command
             rename(resource_path('js/bootstrap.js'), resource_path('js/bootstrap.ts'));
         }
 
-        $this->replaceInFile('.js', '.ts', base_path('vite.config.js'));
         $this->replaceInFile('.js', '.ts', resource_path('views/app.blade.php'));
         
         // Create directories
