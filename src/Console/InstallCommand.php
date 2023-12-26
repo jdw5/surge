@@ -15,14 +15,16 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'surge:install';
+    protected $signature = 'surge:install
+        {--composer=global : Absolute path to the Composer binary which should be used to install packages}
+    ';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Install all controllers, routes, components, pages and commands for the Surge starter kit.';
+    protected $description = 'Install the starter kit';
 
     /**
      * Execute the console command.
