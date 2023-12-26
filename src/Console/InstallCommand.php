@@ -143,10 +143,6 @@ class InstallCommand extends Command
             ]
         );
 
-        $this->call(
-            'migrate'
-        );
-
         // Actions...
         (new Filesystem)->ensureDirectoryExists(app_path('Actions'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Actions', app_path('Actions'));

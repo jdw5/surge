@@ -22,4 +22,10 @@ When installed:
 php artisan surge:install
 ```
 
-This will install all other packages and copy the necessary files to your project.
+This will install all other packages and copy the necessary files to your project. Once installed, ensure the dependencies are installed and the migrations run:
+```console
+npm install && npm run dev
+php artisan migrate
+```
+
+Once installed, do **not** run the `surge:install` command again as this can overwrite file changes. To update dependencies in future, you can reference the publically available `stubs/package.json` and `stubs/.composer.json` files.
