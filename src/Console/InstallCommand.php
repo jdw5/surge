@@ -5,9 +5,6 @@ namespace Jdw5\Surge\Console;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
-use RuntimeException;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -34,9 +31,8 @@ class InstallCommand extends Command
      */
     public function handle()
     {        
-        $this->installNodePackage();
+        $this->installNodePackages();
         $this->installComposerPackages();
-        $this->installConfig();
         $this->installFrontend();
         $this->installBackend();
         $this->installTests();
