@@ -1,12 +1,12 @@
 <template>
-    <tr :class="{'even:bg-gray-50': evens}">
+    <tr :class="{'odd:bg-muted/50': striped}">
         <slot />
     </tr>
 </template>
 
 <script setup>
 defineProps({
-    evens: {
+    striped: {
         type: Boolean,
         default: false,
     },
