@@ -1,7 +1,7 @@
 {
     "name": "jdw5/surge",
     "description": "Laravel + Vue + Inertia personal starter kit",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "license": "proprietary",
     "type": "library",
     "autoload": {

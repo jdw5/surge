@@ -83,9 +83,14 @@ class InstallCommand extends Command
         copy(__DIR__.'/../../stubs/.eslintignore', base_path('.eslintignore'));
         copy(__DIR__.'/../../stubs/settings.json', base_path('settings.json'));
         copy(__DIR__.'/../../stubs/tailwind.config.js', base_path('tailwind.config.js'));
-        copy(__DIR__.'/../../stubs/vite.config.js', base_path('vite.config.js'));
+        copy(__DIR__.'/../../stubs/vite.config.ts', base_path('vite.config.ts'));
         copy(__DIR__.'/../../stubs/tsconfig.json', base_path('tsconfig.json'));
         copy(__DIR__.'/../../stubs/resources/js/app.ts', resource_path('js/app.ts'));
+        copy(__DIR__.'/../../stubs/resources/views/app.blade.php', resource_path('views/app.blade.php'));
+
+        if (file_exists(base_path('vite.config.js'))) {
+            unlink(base_path('vite.config.js'));
+        }
 
         if (file_exists(resource_path('js/app.js'))) {
             unlink(resource_path('js/app.js'));
@@ -143,8 +148,6 @@ class InstallCommand extends Command
             'migrate'
         );
 
-        // Add billable trait to user model and hash the ID
-
         // Actions...
         (new Filesystem)->ensureDirectoryExists(app_path('Actions'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Actions', app_path('Actions'));
@@ -165,7 +168,7 @@ class InstallCommand extends Command
         (new Filesystem)->ensureDirectoryExists(app_path('Data'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Data', app_path('Data'));
 
-        // Models
+        // Models...
         copy(__DIR__.'/../../stubs/app/Models/User.php', app_path('Models/User.php'));
 
         // Middleware...
@@ -192,7 +195,7 @@ class InstallCommand extends Command
         (new Filesystem)->ensureDirectoryExists(app_path('Services'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Services', app_path('Services'));
 
-        // Stubs
+        // Stubs...
         (new Filesystem)->ensureDirectoryExists(base_path('Stubs'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/stubs', base_path('stubs'));
     }
@@ -205,6 +208,7 @@ class InstallCommand extends Command
     protected function installTests()
     {
         (new Filesystem)->ensureDirectoryExists(base_path('tests/Feature'));
+        (new Filesystem)->ensureDirectoryExists(base_path('tests/Unit'));
 
         if (!$this->requireComposerPackages([
             'pestphp/pest:^2.0', 
@@ -215,8 +219,7 @@ class InstallCommand extends Command
 
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/tests/Feature', base_path('tests/Feature'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/tests/Unit', base_path('tests/Unit'));
-        (new Filesystem)->copy(__DIR__.'/../../stubs/default/tests/Pest.php', base_path('tests/Pest.php'));
-        
+        copy(__DIR__.'/../../stubs/default/tests/Pest.php', base_path('tests/Pest.php'));
 
         return true;
     }
