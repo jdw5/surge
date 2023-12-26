@@ -137,14 +137,17 @@ class InstallCommand extends Command
 
     protected function installFrontend()
     {
-        // Copy over the package.json files
-
-        // Copy over typescript
+        // Copy over config files for running frontend
         copy(__DIR__.'/../../stubs/resources/css/app.css', resource_path('css/app.css'));
         copy(__DIR__.'/../../stubs/postcss.config.js', base_path('postcss.config.js'));
+        copy(__DIR__.'/../../stubs/.prettierrc', base_path('.prettierrc'));
+        copy(__DIR__.'/../../stubs/.prettierignore', base_path('.prettierignore'));
+        copy(__DIR__.'/../../stubs/.eslintrc.js', base_path('.eslintrc.js'));
+        copy(__DIR__.'/../../stubs/.eslintignore', base_path('.eslintignore'));
+        copy(__DIR__.'/../../stubs/settings.json', base_path('settings.json'));
         copy(__DIR__.'/../../stubs/tailwind.config.js', base_path('tailwind.config.js'));
         copy(__DIR__.'/../../stubs/vite.config.js', base_path('vite.config.js'));
-        // copy(__DIR__.'/../../stubs/tsconfig.json', base_path('tsconfig.json'));
+        copy(__DIR__.'/../../stubs/tsconfig.json', base_path('tsconfig.json'));
         copy(__DIR__.'/../../stubs/resources/js/app.ts', resource_path('js/app.ts'));
 
         if (file_exists(resource_path('js/app.js'))) {
