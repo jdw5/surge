@@ -1,11 +1,11 @@
-<script lang="ts" setup>
-defineProps<{ message?: string }>()
-</script>
-
 <template>
-    <div v-show="message">
-        <p class="text-sm text-error font-regular">
-            {{ message }}
-        </p>
-    </div>
+    <p v-if="error" class="text-sm text-error font-regular">
+        {{ error }}
+    </p>
 </template>
+
+<script setup lang="ts">
+defineProps<{ error?: string }>()
+
+
+</script>
