@@ -12,9 +12,6 @@ module.exports = {
         ],
         "vue/component-name-in-template-casing": "error",
         "vue/block-lang": ["error", { script: { lang: "ts" } }],
-        "vue/define-macros-order": ["error", {
-            order: ["defineProps", "defineEmits"],
-        }],
         "vue/define-emits-declaration": ["error", "type-based"],
         "vue/define-props-declaration": ["error", "type-based"],
         "vue/no-undef-components": "error",

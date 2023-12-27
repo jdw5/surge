@@ -70,7 +70,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     disabled: false,
     multiple: false,
-    displayBy: () => 'Select an option'
+    displayBy: (item) => item ?? 'Select an option'
 })
 
 const select: Ref<any> = ref()

@@ -15,8 +15,8 @@ export const ucFirst = (text: string) => {
     return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-export const ucWords = (string) => {
-    return string.replace(/\w\S*/g, function (txt) {
+export const ucWords = (text: string) => {
+    return text.replace(/\w\S*/g, function (txt) {
         return ucFirst(txt);
     });
 }
@@ -58,3 +58,10 @@ export const recencyFormat = (given: any) => {
         return `Under a minute ago`;
     }
 }
+
+export const standardFormat = (given: any) => {
+    // Use this to create a standard format for your frontend
+    const date = new Date(given);
+    return date.toLocaleDateString();
+}
+
