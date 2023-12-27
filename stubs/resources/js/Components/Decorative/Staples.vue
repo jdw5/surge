@@ -4,11 +4,15 @@
     </div>
 </template>
 
-<script setup>
-const props = defineProps({
-    quantity: {
-        type: Number,
-        default: 1
+<script setup lang="ts">
+
+withDefaults(
+    defineProps<{
+        quantity?: number
+    }>(),
+    {
+        quantity: 1
     }
-})
+)
+
 </script>

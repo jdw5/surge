@@ -24,19 +24,11 @@
     </div>
 </template>
 
-<script setup>
-defineProps({
-    from: {
-        type: Number,
-        required: true
-    },
-    to: {
-        type: Number,
-        required: true
-    },
-    total: {
-        type: Number,
-        required: true
-    }
-})
+<script setup lang="ts">
+defineProps<{
+    from: number,
+    to: number,
+    total: number
+}>()
+
 </script>

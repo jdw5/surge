@@ -8,18 +8,15 @@
     </nav>
 </template>
   
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import Page from './Page.vue';
 import Next from './Next.vue';
 import Previous from './Previous.vue';
 
-const props = defineProps({
-    links: {
-        type: Array,
-        required: true
-    }
-})
+const props = defineProps<{
+    links: any
+}>()
 
 const middleLinks = computed(() => {
     return props.links.links.slice(1, -1);

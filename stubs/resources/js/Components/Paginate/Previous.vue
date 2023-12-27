@@ -1,5 +1,7 @@
 <template>
-    <Link :href="href" class="relative inline-flex items-center border sm:border-o border-gray-300 sm:rounded-md sm:rounded-l-md px-4 sm:px-2 py-2 text-gray-700 sm:text-gray-400 
+    <Link 
+        :href="href" 
+        class="relative inline-flex items-center border sm:border-o border-gray-300 sm:rounded-md sm:rounded-l-md px-4 sm:px-2 py-2 text-gray-700 sm:text-gray-400 
             hover:bg-gray-50 focus:z-20 focus:outline-offset-0 text-sm font-medium"
     >
         <span class="sm:sr-only">
@@ -12,13 +14,10 @@
     </Link>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 
-const props = defineProps({
-    href: {
-        type: String,
-        required: true,
-    },
-})
+const props = defineProps<{
+    href: string
+}>()
 </script>
