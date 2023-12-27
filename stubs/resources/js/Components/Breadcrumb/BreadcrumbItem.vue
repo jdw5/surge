@@ -4,19 +4,24 @@
             <svg class="h-5 w-5 flex-shrink-0 text-gray-300" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
             </svg>
-            <Link :href="item.href" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700" 
-                :aria-current="route().current(item.href) ? 'page' : undefined">
-                {{ item.name }}
+            <Link 
+                :href="link.href" 
+                class="ml-2 text-sm font-medium text-muted hover:text-muted-hover" 
+                :aria-current="route().current(link.href) ? 'page' : undefined"
+            >
+                {{ link.name }}
             </Link>
         </div>
     </li>
 </template>
 
-<script setup>
-defineProps({
-    item: {
-        type: Object,
+<script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
+defineProps<{
+    link: {
+        href: string,
+        name: string
     }
-})
+}>()
 
 </script>
