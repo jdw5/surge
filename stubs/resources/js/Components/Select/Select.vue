@@ -2,7 +2,6 @@
     <Listbox 
         as="div" 
         :value="modelValue" 
-        :default-value="defaultValue" 
         :disabled="disabled" 
         :multiple="multiple"
         @update:model-value="$emit('update:modelValue', $event)" 
@@ -63,7 +62,6 @@ const emit = defineEmits<{
 
 interface Props {
     modelValue: any,
-    defaultValue: any,
     disabled: boolean,
     multiple?: boolean,
     displayBy?: (item: any) => string,
@@ -72,7 +70,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     disabled: false,
     multiple: false,
-  displayBy: () => 'Select an option'
+    displayBy: () => 'Select an option'
 })
 
 const select: Ref<any> = ref()
