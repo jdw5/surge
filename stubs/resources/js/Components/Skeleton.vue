@@ -1,3 +1,3 @@
 <template>
-    <div class="overflow-hidden bg-muted animate-pulse" />
+    <div class="overflow-hidden bg-gray-100 animate-pulse" />
 </template>
