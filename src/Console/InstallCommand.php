@@ -144,6 +144,21 @@ class InstallCommand extends Command
             ]
         );
 
+        // Ensure Fortify is registered in the app config
+        $this->replaceInFile(
+            'App\Providers\RouteServiceProvider::class,',
+            'App\Providers\RouteServiceProvider::class,'.PHP_EOL.'        App\Providers\FortifyServiceProvider::class,',
+            config_path('app.php')
+        );
+
+        // Change the location of the typescript transformer types
+        (new Filesystem)->ensureDirectoryExists(resource_path('js/types'));
+        $this->replaceInFile(
+            "'output_file' => resource_path('types/generated.d.ts')",
+            "'output_file' => resource_path('js/types/generated.d.ts')",
+            config_path('typescript-transformer.php')
+        );
+
         // Actions...
         (new Filesystem)->ensureDirectoryExists(app_path('Actions'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Actions', app_path('Actions'));
