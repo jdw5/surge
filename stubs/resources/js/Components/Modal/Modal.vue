@@ -24,7 +24,9 @@
                         leave-from="opacity-100 scale-100"
                         leave-to="opacity-0 scale-95"
                     >
-                        <slot :close="close" />
+                        <DialogPanel class="relative transform transition-all sm:my-8 w-full max-w-xl">
+                            <slot :close="close" />
+                        </DialogPanel>
                     </TransitionChild>
                 </div>
             </div>
@@ -33,7 +35,7 @@
 </template>
 
 <script setup>
-import { TransitionRoot, TransitionChild, Dialog } from '@headlessui/vue';
+import { TransitionRoot, TransitionChild, Dialog, DialogPanel } from '@headlessui/vue';
 import { useModal } from 'momentum-modal';
 
 const { show, close, redirect } = useModal()

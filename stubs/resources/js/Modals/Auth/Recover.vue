@@ -1,39 +1,43 @@
 <template>
     <Head title="Recover your account"/>
     <Modal v-slot="{ close }">
-        <h2 class="text-center text-2xl font-bold font-mono text-gray-900">
+        <ModalHeader>
             Recover your account
-        </h2>
-        <form class="space-y-4" @submit.prevent="form.post(route('password.email'), { onSuccess: () => close })">
-            <div>
-                <FormLabel for="email">
-                    Email
-                </FormLabel>
-                <div class="mt-2">
-                    <FormInput id="email" 
-                        v-model="form.email"
-                        required
-                    />
-                    <FormError :error="form.errors.email"/>
+        </ModalHeader>
+        <ModalBody class="p-4">
+            <form class="space-y-4" @submit.prevent="form.post(route('password.email'), { onSuccess: () => close })">
+                <div>
+                    <FormLabel for="email">
+                        Email
+                    </FormLabel>
+                    <div class="mt-2">
+                        <FormInput id="email" 
+                            v-model="form.email"
+                            required
+                        />
+                        <FormError :error="form.errors.email"/>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <button type="submit" :disabled="form.processing"
-                    class="flex w-full justify-center bg-blue-500 disabled:opacity-50 px-3 py-2 text-sm text-semibold text-white"
-                >
-                    Continue
-                </button>
-            </div>
-        </form>
+                <div>
+                    <button type="submit" :disabled="form.processing"
+                        class="flex w-full justify-center bg-blue-500 disabled:opacity-50 px-3 py-2 text-sm text-semibold text-white"
+                    >
+                        Continue
+                    </button>
+                </div>
+            </form>
+        </ModalBody>
     </Modal>
 </template>
 
 <script setup>
 import { Head, useForm, Link } from '@inertiajs/vue3'
-import Modal from '@/Components/Modal.vue'
-import FormLabel from '@/Components/FormLabel.vue';
-import FormInput from '@/Components/FormInput.vue';
-import FormError from '@/Components/FormError.vue';
+import Modal from '@/Components/Modal/Modal.vue'
+import ModalHeader from '@/Components/Modal/ModalHeader.vue'
+import ModalBody from '@/Components/Modal/ModalBody.vue'
+import FormLabel from '@/Components/Form/FormLabel.vue';
+import FormInput from '@/Components/Form/FormInput.vue';
+import FormError from '@/Components/Form/FormError.vue';
 
 const form = useForm({
     email: ''

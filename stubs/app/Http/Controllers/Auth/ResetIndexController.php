@@ -23,6 +23,6 @@ class ResetIndexController extends Controller
                 'email' => $request->email,
                 'token' => $request->token,
             ])
-            ->baseRoute('home');
+            ->baseRoute('home.index');
     }
 }

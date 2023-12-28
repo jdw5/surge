@@ -90,14 +90,14 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::confirmPasswordView(function () {
-            return inertia()->modal('Auth/ConfirmPassword')->baseRoute('home');
+            return inertia()->modal('Auth/ConfirmPassword')->baseRoute('home.index');
         });
 
         Fortify::twoFactorChallengeView(function () {
-            return inertia()->modal('Auth/TwoFactorChallenge')->baseRoute('home');
+            return inertia()->modal('Auth/TwoFactorChallenge')->baseRoute('home.index');
         });
         Fortify::verifyEmailView(function () {
-            return inertia()->modal('Auth/VerifyEmail')->baseRoute('home');
+            return inertia()->modal('Auth/VerifyEmail')->baseRoute('home.index');
         });
     }
 }

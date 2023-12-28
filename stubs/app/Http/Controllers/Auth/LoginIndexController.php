@@ -16,6 +16,6 @@ class LoginIndexController extends Controller
     public function __invoke()
     {
         return Inertia::modal('Auth/Login')
-            ->baseRoute('home');
+            ->baseRoute('home.index');
     }
 }

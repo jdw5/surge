@@ -27,13 +27,13 @@
                                 <div v-else>
                                     <SecondaryButton 
                                         :as="Link" 
-                                        :href="route('register')"
+                                        :href="route('auth.register')"
                                     >
                                         Register
                                     </SecondaryButton>
                                     <PrimaryButton 
                                         :as="Link" 
-                                        :href="route('login')"
+                                        :href="route('auth.login')"
                                     >
                                         Log in
                                     </PrimaryButton>

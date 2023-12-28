@@ -18,6 +18,6 @@ class RecoverIndexController extends Controller
     public function __invoke(Request $request)
     {
         return Inertia::modal('Auth/Recover')
-            ->baseRoute('home');
+            ->baseRoute('home.index');
     }
 }
