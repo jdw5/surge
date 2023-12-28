@@ -171,6 +171,10 @@ class InstallCommand extends Command
         copy(__DIR__.'/../../stubs/config/hashids.php', config_path('hashids.php'));
         copy(__DIR__.'/../../stubs/config/socialite.php', config_path('socialite.php'));
 
+        // Commands...
+        (new Filesystem)->ensureDirectoryExists(app_path('Console/Commands'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Console/Commands', app_path('Console/Commands'));
+
         // Controllers...
         (new Filesystem)->ensureDirectoryExists(app_path('Http/Controllers'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Http/Controllers', app_path('Http/Controllers'));
