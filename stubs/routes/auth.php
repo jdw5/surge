@@ -1,6 +1,5 @@
 <?php
 
-use Laravel\Fortify\Features;
 use Laravel\Fortify\RoutePath;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
