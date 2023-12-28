@@ -71,7 +71,6 @@ class MakeModalCommand extends Command
         return $this->resolveStubPath('/stubs/modal.vue.stub');
     }
 
-
     public function handle()
     {
         if (!$this->option('force') && $this->alreadyExists($this->getInputName())) {
