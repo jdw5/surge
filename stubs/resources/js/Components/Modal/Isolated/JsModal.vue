@@ -15,7 +15,9 @@
                         leave-from="opacity-100 translate-y-0 sm:scale-100" 
                         leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     >
-                        <slot :close="close "/>
+                        <DialogPanel class="relative transform transition-all sm:my-8 w-full max-w-xl">
+                            <slot :close="close" />
+                        </DialogPanel>
                     </TransitionChild>
                 </div>
             </div>
@@ -24,8 +26,12 @@
 </template>
   
 <script setup>
-import { ref } from 'vue'
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { 
+    Dialog, 
+    DialogPanel, 
+    TransitionChild, 
+    TransitionRoot 
+} from '@headlessui/vue'
 
 const props = defineProps({
     show: {
