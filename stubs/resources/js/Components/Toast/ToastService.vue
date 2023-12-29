@@ -1,5 +1,5 @@
 <template>
-    <div aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6">
+    <div aria-live="assertive" class="pointer-events-none fixed z-50 inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6">
         <div class="flex w-full flex-col items-center space-y-2 sm:items-end">
             <TransitionGroup move-class="transition ease-in-out duration-300" 
                 leave-active-class="transition ease-in-out duration-300 absolute"
@@ -9,7 +9,13 @@
                 leave-from-class="opacity-100 translate-y-0 sm:translate-x-0"
                 enter-from-class="opacity-0 translate-y-2 sm:translate-y-0 sm:translate-x-2"
             >
-                <Toast :id="`toast_${message.id}`" v-for="message in messages" :key="message.id" :message="message" @remove="remove"/>
+                <Toast 
+                    v-for="toast in toasts" 
+                    :id="toast.id" 
+                    :key="toast.id" 
+                    :toast="toast"
+                    @remove="remove"
+                />
             </TransitionGroup>
         </div>
     </div>
@@ -17,39 +23,26 @@
 
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue';
-import bus from './ToastEventBus.js';
-import Toast from './Toast.vue';
+import bus from '@/Lib/Toast/ToastBus';
+import Toast from '@/Components/Toast/Toast.vue';
 
-let messageIdx = 0;
+const toasts = ref([]);
 
-const emit = defineEmits(['close']);
-
-const messages = ref([]);
-
-const add = (message) => {
-    if (message.id == null) {
-        message.id = messageIdx++;
-    }
-
-    messages.value = [...messages.value, message];
+const add = (toast) => {
+    toasts.value = [...toasts.value, toast];
 };
 
-const remove = (message) => {
-    console.log(messages)
-    let index = -1;
-
-    for (let i = 0; i < messages.value.length; i++) {
-        if (messages.value[i] === message) {
-            index = i;
-            break;
-        }
-    }
-
-    messages.value.splice(index, 1);
-    emit('close', message);
+const remove = (id) => {
+    console.log(id)
+    const index = toasts.value.findIndex((m) => m.id === id);
+    toasts.value.splice(index, 1);
 }
 
 onMounted(() => {
+    toasts.value.push({
+        id: 0,
+        toast: 'Hello',
+    })
     bus.on('add', add);
     bus.on('remove', remove);
 })

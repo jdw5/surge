@@ -6,6 +6,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import { modal } from "momentum-modal"
+import toast from '@/Lib/Toast/ToastPlugin';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -20,6 +21,7 @@ createInertiaApp({
             .use(modal, {
                 resolve: (name: string) => resolvePageComponent(`./Modals/${name}.vue`, import.meta.glob<DefineComponent>('./Modals/**/*.vue'))                
             })
+            .use(toast)
             .mount(el);
     },
     

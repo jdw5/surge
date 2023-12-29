@@ -165,7 +165,10 @@ class InstallCommand extends Command
             'auth.login',
             app_path('Http/Kernel.php')
         );
-        
+
+        // Dashboard
+        $this->replaceInFile('/home', '/dashboard', app_path('Providers/RouteServiceProvider.php'));
+
         // Actions...
         (new Filesystem)->ensureDirectoryExists(app_path('Actions'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Actions', app_path('Actions'));

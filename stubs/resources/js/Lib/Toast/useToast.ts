@@ -1,59 +1,28 @@
-import bus from './ToastEventBus.js';
+import useId from '@/Lib/useId';
+import bus from './ToastBus';
+import { ref, computed } from 'vue'
 
-export function useToast() {
+const toastOptions = ref({
+    id: null,
+    type: null, // success, error, warning, info, none
+    body: '',
+    timeout: 2000,
+})
+
+export default () => {
+    const toast = (body: string, options: any) => {
+        toastOptions.value = {...toastOptions.value, ...options}
+        toastOptions.value.id = useId()
+        toastOptions.value.body = body
+        bus.emit('add', toastOptions.value)
+
+        setTimeout(() => {
+            bus.emit('remove', toastOptions.value.id)
+        }, toastOptions.value.timeout)
+    }
+
     return {
-        add: (message) => {
-            if (typeof message === 'string') {
-                message = { message: message };
-            }
-            bus.emit('add', message);
-        },
-        remove: (message) => {
-            bus.emit('remove', message);
-        },
+        toast,
+        body: computed(() => toastOptions.value.body),
     }
 }
-
-
-// import { ref, computed } from 'vue'
-
-// const active = ref(false)
-
-// const toastOptions = ref({
-//     body: '',
-//     timeout: 2000,
-// })
-
-// let timeout = null
-
-// export default () => {
-//     const toast = (body, options) => {
-//         if (active.value) {
-//             clearTimeout(timeout)
-//         }
-//         toastOptions.value = {...toastOptions.value, ...options}
-
-//         toastOptions.value.body = body
-//         active.value = true
-
-//         timeout = setTimeout(() => {
-//             clear()
-//         }, toastOptions.value.timeout)
-//     }
-
-//     const clear = () => {
-//         active.value = false
-//     }
-
-//     const hide = () => {
-//         clearInterval(timeout)
-//         clear()
-//     }
-
-//     return {
-//         toast,
-//         active,
-//         hide,
-//         body: computed(() => toastOptions.value.body),
-//     }
-// }

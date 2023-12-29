@@ -1,18 +1,15 @@
 import { router, usePage } from '@inertiajs/vue3'
-import useToast from '@/Composables/useToast'
+import useToast from './useToast'
 
 const { toast } = useToast()
 
 export default () => {
-    console.log('Hello')
     router.on('finish', () => {
-        let body = usePage().props.toast
-
-        if (body) {
-            toast(body, {
+        let data: any = usePage().props.toast
+        if (data) {
+            toast(data, {
                 timeout: 2000,
             })
         }
-
     })
 }
