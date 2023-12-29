@@ -1,15 +1,14 @@
 <template>
     <Head title="Dashboard"></Head>
-    <div class="max-w-7xl mx-auto p-8">
-        Dashboard
-    </div>
+    
+    Dashboard
 </template>
 
 <script setup>
 import { Head } from '@inertiajs/vue3'
-import DefaultLayout from '@/Layouts/DefaultLayout.vue'
+import MainLayout from '@/Layouts/MainLayout.vue'
 
 defineOptions({
-    layout: DefaultLayout,
+    layout: MainLayout,
 })
 </script>

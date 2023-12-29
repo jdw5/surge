@@ -5,12 +5,12 @@
             <ModalHeader>
                 Sign in
             </ModalHeader>
-            <form @submit.prevent="form.post('/login')" class="space-y-4 p-4">
+            <form @submit.prevent="onSubmit" class="space-y-4 p-4">
                 <div>
                     <FormLabel for="email">
                         Email
                     </FormLabel>
-                    <div class="mt-2">
+                    <div>
 
                         <FormInput id="email" 
                             v-model="form.email"
@@ -23,7 +23,7 @@
                     <FormLabel for="password">
                         Password
                     </FormLabel>
-                    <div class="mt-2">
+                    <div>
                         <FormInput id="password" 
                             type="password"
                             v-model="form.password"
@@ -34,10 +34,9 @@
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <input type="checkbox" id="remember" 
+                        <Checkbox id="remember" 
                             v-model="form.remember"
-                            class="w-4 h-4 text-blue-500 focus:ring-blue-500"
-                        >
+                        />
                         <FormLabel for="remember" class="block ml-2">
                             Remember me
                         </FormLabel>
@@ -49,11 +48,9 @@
                     </div>
                 </div>
                 <div class="">
-                    <button type="submit" :disabled="form.processing"
-                        class="flex w-full justify-center bg-blue-500 disabled:opacity-50 px-3 py-2 text-sm text-semibold text-white"
-                    >
+                    <PrimaryButton type="submit" :disabled="form.processing" class="w-full">
                         Sign in
-                    </button>
+                    </PrimaryButton>
                 </div>
 
             </form>
@@ -67,8 +64,10 @@ import Modal from '@/Components/Modal/Modal.vue'
 import ModalHeader from '@/Components/Modal/ModalHeader.vue'
 import ModalBody from '@/Components/Modal/ModalBody.vue'
 import FormLabel from '@/Components/Form/FormLabel.vue';
+import Checkbox from '@/Components/Form/Checkbox.vue';
 import FormInput from '@/Components/Form/FormInput.vue';
 import FormError from '@/Components/Form/FormError.vue';
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 
 const form = useForm({
     email: '',
@@ -76,4 +75,11 @@ const form = useForm({
     remember: false
 })
 
+const onSubmit = () => {
+    form.post('/login', {
+        onError: () => {
+            console.log('WHY')
+        }
+    })
+}
 </script>

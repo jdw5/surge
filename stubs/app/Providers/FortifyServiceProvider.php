@@ -11,12 +11,9 @@ use Illuminate\Cache\RateLimiting\Limit;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use Illuminate\Support\Facades\RateLimiter;
-use Laravel\Fortify\Contracts\LoginResponse;
 use App\Http\Responses\PasswordResetResponse;
 use App\Http\Responses\PasswordUpdateResponse;
-use App\Actions\Fortify\UpdateUserProfilePhoto;
 use App\Http\Responses\PasswordConfirmedResponse;
-use App\Actions\Contracts\UpdatesUserProfilePhoto;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Http\Responses\ProfileInformationUpdatedResponse;
 use App\Http\Responses\LoginResponse as ResponsesLoginResponse;
@@ -34,6 +31,7 @@ class FortifyServiceProvider extends ServiceProvider
             \Laravel\Fortify\Contracts\LoginResponse::class,
             ResponsesLoginResponse::class
         );
+
         $this->app->singleton(
             \Laravel\Fortify\Contracts\ProfileInformationUpdatedResponse::class,
             ProfileInformationUpdatedResponse::class
@@ -61,11 +59,6 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(
             \Laravel\Fortify\Contracts\PasswordResetResponse::class,
             PasswordResetResponse::class
-        );
-
-        $this->app->singleton(
-            UpdatesUserProfilePhoto::class,
-            UpdateUserProfilePhoto::class
         );
     }
 
@@ -96,6 +89,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::twoFactorChallengeView(function () {
             return inertia()->modal('Auth/TwoFactorChallenge')->baseRoute('home.index');
         });
+        
         Fortify::verifyEmailView(function () {
             return inertia()->modal('Auth/VerifyEmail')->baseRoute('home.index');
         });

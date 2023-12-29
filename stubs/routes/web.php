@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeIndexController;
-// use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardIndexController;
 use App\Http\Controllers\Auth\LoginIndexController;
 use App\Http\Controllers\Auth\ResetIndexController;
 use App\Http\Controllers\Auth\RecoverIndexController;
@@ -20,5 +20,10 @@ Route::get('auth/two-factor', TwoFactorIndexController::class)->name('auth.two-f
 
 Route::get('auth/recover', RecoverIndexController::class)->name('auth.recover');
 Route::get('auth/reset', ResetIndexController::class)->name('password.reset');
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', DashboardIndexController::class)->name('dashboard.index');
+});
 
 require __DIR__ . '/auth.php';

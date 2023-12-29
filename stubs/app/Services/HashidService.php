@@ -15,7 +15,7 @@ class HashidService
     /**
      * HashidService constructor.
      */
-    public function __construct(string $salt = config('app.name'), int $length = 12)
+    public function __construct(string $salt = 'salt', int $length = 12)
     {
         $this->hashids = new Hashids($salt, $length);
     }

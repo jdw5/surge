@@ -1,11 +1,11 @@
 <template>
     <Head title="Recover your account"/>
     <Modal v-slot="{ close }">
-        <ModalHeader>
-            Recover your account
-        </ModalHeader>
-        <ModalBody class="p-4">
-            <form class="space-y-4" @submit.prevent="form.post(route('password.email'), { onSuccess: () => close })">
+        <ModalBody>
+            <ModalHeader>
+                Recover your account
+            </ModalHeader>
+            <form class="space-y-4 p-4" @submit.prevent="form.post(route('password.email'), { onSuccess: () => close })">
                 <div>
                     <FormLabel for="email">
                         Email
@@ -19,11 +19,12 @@
                     </div>
                 </div>
                 <div>
-                    <button type="submit" :disabled="form.processing"
-                        class="flex w-full justify-center bg-blue-500 disabled:opacity-50 px-3 py-2 text-sm text-semibold text-white"
+                    <PrimaryButton type="submit" 
+                        :disabled="form.processing"
+                        class="w-full" 
                     >
                         Continue
-                    </button>
+                    </PrimaryButton>
                 </div>
             </form>
         </ModalBody>
@@ -38,6 +39,7 @@ import ModalBody from '@/Components/Modal/ModalBody.vue'
 import FormLabel from '@/Components/Form/FormLabel.vue';
 import FormInput from '@/Components/Form/FormInput.vue';
 import FormError from '@/Components/Form/FormError.vue';
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 
 const form = useForm({
     email: ''

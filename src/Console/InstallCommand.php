@@ -140,7 +140,7 @@ class InstallCommand extends Command
         $this->call(
             'vendor:publish', 
             [
-                '--tag' => 'typescript-transformer-config'
+                '--provider' => 'Spatie\LaravelTypeScriptTransformer\TypeScriptTransformerServiceProvider'
             ]
         );
 
@@ -159,6 +159,13 @@ class InstallCommand extends Command
             config_path('typescript-transformer.php')
         );
 
+        // Update authenticate middleware
+        $this->replaceInFile(
+            'login',
+            'auth.login',
+            app_path('Http/Kernel.php')
+        );
+        
         // Actions...
         (new Filesystem)->ensureDirectoryExists(app_path('Actions'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Actions', app_path('Actions'));

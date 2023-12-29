@@ -1,10 +1,10 @@
 <template>
     <Head title="Confirm password"/>
     <Modal v-slot="{ close }">
-        <ModalHeader>
-            Confirm password
-        </ModalHeader>
         <ModalBody class="p-4">
+            <ModalHeader>
+                Confirm password
+            </ModalHeader>
             <form class="space-y-4" @submit.prevent="form.post(route('password.confirm'), { onSuccess: () => close })">
                 <div>
                     <FormLabel for="password">

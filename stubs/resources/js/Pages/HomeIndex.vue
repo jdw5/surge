@@ -1,8 +1,6 @@
 <template>
-    <Head title="Dashboard"></Head>
-    <div class="max-w-7xl mx-auto p-8">
+    <Head title="Welcome"></Head>
         Dashboard
-    </div>
 </template>
 
 <script setup>
