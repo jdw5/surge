@@ -33,16 +33,11 @@ const add = (toast) => {
 };
 
 const remove = (id) => {
-    console.log(id)
     const index = toasts.value.findIndex((m) => m.id === id);
     toasts.value.splice(index, 1);
 }
 
 onMounted(() => {
-    toasts.value.push({
-        id: 0,
-        toast: 'Hello',
-    })
     bus.on('add', add);
     bus.on('remove', remove);
 })

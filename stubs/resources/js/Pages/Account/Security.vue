@@ -8,12 +8,12 @@
 
 <script setup>
 import { Head } from '@inertiajs/vue3'
-import AccountLayout from '@/Layouts/AccountLayout.vue';
+import MainLayout.vue from '@/Layouts/MainLayout.vue.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import ChangePasswordForm from './Form/ChangePasswordForm.vue';
 import TwoFactorForm from './Form/TwoFactorForm.vue';
 
 defineOptions({
-    layout: [DefaultLayout, AccountLayout],
+    layout: [DefaultLayout, MainLayout.vue],
 })
 </script>

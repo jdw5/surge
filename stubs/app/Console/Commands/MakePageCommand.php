@@ -66,9 +66,9 @@ class MakePageCommand extends Command
     protected function getStub(bool $form = false)
     {
         if ($form) {
-            return $this->resolveStubPath('/stubs/page.vue.form.stub');
+            return $this->resolveStubPath('/stubs/page.form.stub');
         }
-        return $this->resolveStubPath('/stubs/page.vue.stub');
+        return $this->resolveStubPath('/stubs/page.stub');
     }
 
 

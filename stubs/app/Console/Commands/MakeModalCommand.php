@@ -66,9 +66,9 @@ class MakeModalCommand extends Command
     protected function getStub(bool $form = false)
     {
         if ($form) {
-            return $this->resolveStubPath('/stubs/modal.vue.form.stub');
+            return $this->resolveStubPath('/stubs/modal.form.stub');
         }
-        return $this->resolveStubPath('/stubs/modal.vue.stub');
+        return $this->resolveStubPath('/stubs/modal.stub');
     }
 
     public function handle()

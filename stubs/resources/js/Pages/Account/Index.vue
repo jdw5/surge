@@ -80,14 +80,14 @@
 <script setup>
 import { Head, useForm, Link, usePage } from '@inertiajs/vue3'
 import { ref, computed, watch } from 'vue'
-import AccountLayout from '@/Layouts/AccountLayout.vue';
+import MainLayout.vue from '@/Layouts/MainLayout.vue.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import FormLabel from '@/Components/FormLabel.vue';
 import FormInput from '@/Components/FormInput.vue';
 import FormError from '@/Components/FormError.vue';
 
 defineOptions({
-    layout: [DefaultLayout, AccountLayout],
+    layout: [DefaultLayout, MainLayout.vue],
 })
 
 const page = usePage()

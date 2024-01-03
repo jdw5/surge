@@ -60,7 +60,7 @@ class MakeEndpointCommand extends Command
     {
         $importInertia = $this->useInertia($request);
         $namespace = implode('\\', $requestPath);
-        $fullNamespace = "App\\Http\\Requests\\$namespace" . '\\' . $request;
+        $fullNamespace = "App\\Http\\Requests\\$namespace" . $request;
         $file = file_get_contents($controllerPath);
         if ($importInertia) {
             $file = str_replace('use Illuminate\Http\Request;', "use $fullNamespace;\nuse Inertia\Inertia;", $file);
